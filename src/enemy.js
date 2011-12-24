@@ -56,14 +56,14 @@ var Enemy = function(id,type,x,y,cloud){
 						health:3, // Custom attribute. Indicates the strength.
 						shadow:{tileset:"shadows",tile:0},
 						frames:{
-							standup:{ speed:1, frames:[1] },
+							standup:{ speed:1, frames:[0] },
 							standdown:{ speed:1, frames:[3] },
-							standleft:{ speed:1, frames:[4] },
-							standright:{ speed:1, frames:[4] },
-							movingup:{speed:3,frames:[0,1] },
-							movingdown:{speed:3,frames:[2,3] },
-							movingleft:{speed:3,frames:[4,5] },
-							movingright:{speed:3,frames:[4,5] }
+							standleft:{ speed:1, frames:[6] },
+							standright:{ speed:1, frames:[6] },
+							movingup:{speed:3,frames:[0,1,2] },
+							movingdown:{speed:3,frames:[3,4,5] },
+							movingleft:{speed:3,frames:[6,7] },
+							movingright:{speed:3,frames:[6,7] }
 						}
 					});
 				},
@@ -72,14 +72,14 @@ var Enemy = function(id,type,x,y,cloud){
 					toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,accy:-3,tileset:"flame-blue"});
 					toys.generate.sparks.simple(this,"sparks",null,{animspeed:1,accx:-3,tileset:"flame-blue"});
 					toys.generate.sparks.simple(this,"sparks",null,{animspeed:1,accx:3,tileset:"flame-blue"});
-					if (help.random(0,2)==0) maingame.addBonus(this.x,this.y,"coin"); // reward with a coin, sometime
+					//if (help.random(0,2)==0) maingame.addBonus(this.x,this.y,"coin"); // reward with a coin, sometime
 					gbox.trashObject(this); // Vanish!
 				},
 
 				attack:function() {
-				if (gbox.objectIsVisible(this)) gbox.hitAudio("hit"); // Only visible enemies plays audio: audio heard without seeying anything is confusing.
+				if (gbox.objectIsVisible(this)) gbox.hitAudio("sword"); // Only visible enemies plays audio: audio heard without seeying anything is confusing.
 					this.stilltimer=10; // Stay still for a while
-					this.frame=(this.facing==toys.FACE_UP?0:(this.facing==toys.FACE_DOWN?3:4));
+					this.frame=(this.facing==toys.FACE_UP?0:(this.facing==toys.FACE_DOWN?3:6));
 					toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,accy:-2,tileset:"flame-white"});
 					toys.topview.fireBullet("foesbullets",null,{
 						fullhit:true,
@@ -92,7 +92,7 @@ var Enemy = function(id,type,x,y,cloud){
 						from:this,
 						sidex:this.facing,
 						sidey:this.facing,
-						tileset:"bullet-black",
+						tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"leftarrow":"uparrow"),
 						frames:{speed:1,frames:[0]},
 						acc:5,
 						fliph:(this.facing==toys.FACE_RIGHT),

@@ -14,21 +14,21 @@ var Player = function(){
 
 		initialize:function() {
 		toys.topview.initialize(this,{
-			haspushing:true,
+			haspushing:false,
 			shadow:{tileset:"shadows",tile:0},
 			frames:{
 				standup:{ speed:1, frames:[0] },
-				standdown:{ speed:1, frames:[3] },
-				standleft:{ speed:1, frames:[6] },
-				standright:{ speed:1, frames:[6] },
-				movingup:{speed:3,frames:[0,1,0,2] },
-				movingdown:{speed:3,frames:[3,4,3,5] },
-				movingleft:{speed:3,frames:[6,7] },
-				movingright:{speed:3,frames:[6,7] },
-				pushingup:{speed:6,frames:[0,1,0,2] },
-				pushingdown:{speed:6,frames:[3,4,3,5] },
-				pushingleft:{speed:6,frames:[6,7] },
-				pushingright:{speed:6,frames:[6,7] }
+				standdown:{ speed:1, frames:[2] },
+				standleft:{ speed:1, frames:[4] },
+				standright:{ speed:1, frames:[4] },
+				movingup:{speed:3,frames:[0,1] },
+				movingdown:{speed:3,frames:[2,3] },
+				movingleft:{speed:3,frames:[4,5] },
+				movingright:{speed:3,frames:[4,5] },
+				pushingup:{speed:6,frames:[0,1] },
+				pushingdown:{speed:6,frames:[2,3] },
+				pushingleft:{speed:6,frames:[4,5] },
+				pushingright:{speed:6,frames:[4,5] }
 			}
 		});
 	},
@@ -62,56 +62,34 @@ var Player = function(){
 	},
 
 	attack:function() {
-		gbox.hitAudio("sword");
+		gbox.hitAudio("hit");
 
 		this.stilltimer=10; // Stay still for a while
-		this.frame=(this.facing==toys.FACE_UP?9:(this.facing==toys.FACE_DOWN?10:11));
+		this.frame=(this.facing==toys.FACE_UP?0:(this.facing==toys.FACE_DOWN?2:4));
 
-		switch (maingame.hud.getValue("weapon","value")) {
-			case 0: { // Sword
-				toys.topview.fireBullet("playerbullets",null,{
-					fullhit:true,
-					collidegroup:"foes",
-					undestructable:true, // Custom attribute. Is not destroyed by the hitted object.
-					power:1, // Custom attribute. Is the damage value of this weapon.
-					from:this,
-					sidex:this.facing,
-					sidey:this.facing,
-					tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"lefthit":"uphit"),
-					frames:{speed:1,frames:[0,1,2,3]},
-					duration:4,
-					acc:5,
-					fliph:(this.facing==toys.FACE_RIGHT),
-					flipv:(this.facing==toys.FACE_DOWN),
-					angle:toys.FACES_ANGLE[this.facing]
-				});
-				break;
-			}
-			case 1: { // Arrows
-				toys.topview.fireBullet("playerbullets",null,{
-					_canhitswitch:true, // Arrows can hit switchs and turn them on
-					fullhit:true,
-					collidegroup:"foes",
-					map:tilemaps.map, // Map is specified, since collides with walls
-					mapindex:"map",
-					defaulttile:tilemaps._defaultblock,
-					undestructable:false, // Custom attribute. Is destroyed by the hitted object.
-					power:2, // Custom attribute. Is the damage value of this weapon.
-					from:this,
-					sidex:this.facing,
-					sidey:this.facing,
-					tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"leftarrow":"uparrow"),
-					frames:{speed:1,frames:[0,1]},
-					acc:5,
-					fliph:(this.facing==toys.FACE_RIGHT),
-					flipv:(this.facing==toys.FACE_DOWN),
-					angle:toys.FACES_ANGLE[this.facing],
-					spritewalls:"walls",
-					gapy:8 // Avoid wall collision on start
-				});
-				break;
-		   }
-	   }
+		toys.topview.fireBullet("playerbullets",null,{
+			_canhitswitch:true, // Arrows can hit switchs and turn them on
+			fullhit:true,
+			collidegroup:"foes",
+			map:tilemaps.map, // Map is specified, since collides with walls
+			mapindex:"map",
+			defaulttile:tilemaps._defaultblock,
+			undestructable:false, // Custom attribute. Is destroyed by the hitted object.
+			power:2, // Custom attribute. Is the damage value of this weapon.
+			from:this,
+			sidex:this.facing,
+			sidey:this.facing,
+			//tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"leftarrow":"uparrow"),
+			tileset:"bullet-black",
+			frames:{speed:1,frames:[0]},
+			acc:5,
+			fliph:(this.facing==toys.FACE_RIGHT),
+			flipv:(this.facing==toys.FACE_DOWN),
+			angle:toys.FACES_ANGLE[this.facing],
+			spritewalls:"walls",
+			gapy:8 // Avoid wall collision on start
+		});
+
 	},
 
 	first:function() {
@@ -138,6 +116,7 @@ var Player = function(){
 			if (gbox.keyIsHit("a"))
 				this.attack();
 			else if (gbox.keyIsHit("b")) {
+				/*
 				var ahead=toys.topview.getAheadPixel(this,{distance:5});
 				ahead.group="walls";
 				ahead.call="doPlayerAction";
@@ -146,6 +125,7 @@ var Player = function(){
 						gbox.hitAudio("default-menu-option");
 					maingame.hud.addValue("weapon","value",1);
 				}
+				*/
 			}
 		},
 
