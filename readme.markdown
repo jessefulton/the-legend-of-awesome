@@ -1,6 +1,6 @@
 # The Legend of Awesome!!!
 
-Go to http://portfolio.jessefulton.com/the-legend-of-awesome/tlos.html to play
+Go to http://projects.jessefulton.com/the-legend-of-awesome/tlos.html to play
 
 (Keys Z, X, C correspond to buttons A, B, C)
 
